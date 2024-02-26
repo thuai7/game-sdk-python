@@ -4,36 +4,19 @@ on:
       - published
 
 jobs:
-  zip:
+  package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - run: |
-          zip -r sdk-python.zip src/*
-
       - uses: actions/upload-artifact@v2
         with:
-          name: sdk-python-${{ github.sha }}.zip
-          path: sdk-python.zip
-
-  tar:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - run: |
-          tar -czvf sdk-python.tar.gz src/*
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: sdk-python-${{ github.sha }}.tar.gz
-          path: sdk-python.tar.gz
+          name: sdk-python-${{ github.sha }}
+          path: src
 
   release:
     needs:
-      - zip
-      - tar
+      - package
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -47,7 +30,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: sdk-python-${{ github.sha }}.${{ matrix.extension }}
+          name: sdk-python-${{ github.sha }}
           path: sdk-python
 
       - run: |
