@@ -4,28 +4,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  zip:
+  package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - run: |
-          zip -r sdk-python.zip src/*
-
       - uses: actions/upload-artifact@v2
         with:
-          name: sdk-python-${{ github.sha }}.zip
-          path: sdk-python.zip
-
-  tar:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - run: |
-          tar -czvf sdk-python.tar.gz src/*
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: sdk-python-${{ github.sha }}.tar.gz
-          path: sdk-python.tar.gz
+          name: sdk-python-${{ github.sha }}
+          path: src
